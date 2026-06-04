@@ -9,6 +9,13 @@ import Foundation
 import CoreLocation
 import Observation
 
+let earthRadius = 6_371_000.0
+
+extension BinaryFloatingPoint {
+    var radians: Self { self * .pi / 180 }
+    var degrees: Self { self * 180 / .pi }
+}
+
 @Observable
 final class LocationProvider: NSObject, CLLocationManagerDelegate {
     private let manager = CLLocationManager()
@@ -44,5 +51,14 @@ final class LocationProvider: NSObject, CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: any Error) {
         print("Core Location Error: \(error.localizedDescription)")
+    }
+    
+    func bearing(from start: CLLocationCoordinate2D, to end: CLLocationCoordinate2D) -> CLLocationDirection? {
+        let dx = end.longitude - start.longitude
+        let dy = end.latitude - start.latitude
+        
+        let a = 180 - atan2(dy,dx)
+        
+        return (a + 360).truncatingRemainder(dividingBy: 360)
     }
 }
