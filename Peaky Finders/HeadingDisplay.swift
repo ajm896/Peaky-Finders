@@ -12,13 +12,21 @@ struct HeadingDisplay: View {
     var bearingToTarget: Double
     var heading: Double?
     
-    var relativeBearing: Double {
-        (bearingToTarget - (heading ?? 0)).truncatingRemainder(dividingBy: 360)
+    var relativeBearing: Double? {
+        if let heading = self.heading{
+            ((bearingToTarget - heading) + 360).truncatingRemainder(dividingBy: 360)
+        } else {
+            nil
+        }
     }
     
     var body: some View {
         VStack{
-            Image(systemName: "arrow.up").font(.system(size: 80)).rotationEffect(.degrees(relativeBearing))
+            if let relativeBearing {
+                Image(systemName: "location.north.line").font(.system(size: 80)).rotationEffect(.degrees(relativeBearing))
+            } else {
+                Image("xmark.circle")
+            }
             if let heading = heading {
                 Text("Heading: \(heading, specifier: "%.0f")°")
             } else {
