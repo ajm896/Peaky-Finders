@@ -62,7 +62,4 @@ final class LocationProvider: NSObject, CLLocationManagerDelegate {
     }
 }
 
-struct Peak {
-    var name: String
-    var locationCoordinates: CLLocationCoordinate2D
-}
+

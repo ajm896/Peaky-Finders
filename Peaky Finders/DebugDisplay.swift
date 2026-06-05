@@ -22,37 +22,20 @@ struct DebugDisplay: View {
             case .restricted, .denied:
                 Text("Location Access Denied")
             default:
-                
-                
                 if let currentLocation = locationProvider.currentLocation {
-                    
                     let bearing = locationProvider.bearing(
                         from: currentLocation.coordinate,
                         to: targetPeak.locationCoordinates
                     )
-                    
                     let distance = locationProvider.currentLocation?.distance(
                         from: CLLocation(
                             latitude: targetPeak.locationCoordinates.latitude,
                             longitude: targetPeak.locationCoordinates.longitude
                     ))
                     
-                    HeadingDisplay(locationProvider: locationProvider, targetPeak: targetPeak)
-                
-                    
-                    VStack{
-                        Text("\(targetPeak.name)")
-                        Text("Lat: \(targetPeak.locationCoordinates.latitude), Lon: \(targetPeak.locationCoordinates.longitude)")
-                    }.padding(12)
-                    
-                    if let distance {
-                        Text("Dist to \(targetPeak.name): \(distance/1000, specifier: "%.2f") km")
-                    } else {
-                        Text("Location not Found")
-                    }
-                    
-                    Text("Bearing to \(targetPeak.name): \(bearing, specifier: "%.0f")°")
-                  
+                    HeadingDisplay(bearingToTarget: bearing, heading: locationProvider.heading)
+                    PeakDisplay(peak: targetPeak)
+                    DistanceDisplay(distance: distance, targetPeak: targetPeak)
                 } else {
                     Text("Waiting for location")
                 }
@@ -65,7 +48,7 @@ struct DebugDisplay: View {
                     }
                 }.padding(12)
             }
-        }.font(.title2.monospacedDigit())
+        }
         .onAppear {
             locationProvider.start()
         }
