@@ -46,19 +46,30 @@ final class LocationProvider: NSObject, CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-        heading = newHeading.trueHeading >= 0 ? newHeading.trueHeading : newHeading.magneticHeading
+        heading = newHeading.trueHeading >= 0 ? newHeading.trueHeading : nil
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: any Error) {
         print("Core Location Error: \(error.localizedDescription)")
     }
     
-    func bearing(from start: CLLocationCoordinate2D, to end: CLLocationCoordinate2D) -> CLLocationDirection? {
-        let dx = end.longitude - start.longitude
+    func bearing(from start: CLLocationCoordinate2D, to end: CLLocationCoordinate2D) -> CLLocationDirection {
+        let midLat = (start.latitude + end.latitude) / 2
+        let dx = (end.longitude - start.longitude) * cos(midLat.radians)
         let dy = end.latitude - start.latitude
         
-        let a = 180 - atan2(dy,dx)
+        let a = 90 - atan2(dy,dx).degrees
         
         return (a + 360).truncatingRemainder(dividingBy: 360)
+    }
+}
+
+struct Peak {
+    var name: String
+    var locationCoordinates: CLLocationCoordinate2D
+    
+    init(name: String, locationCoordinates: CLLocationCoordinate2D) {
+        self.name = name
+        self.locationCoordinates = locationCoordinates
     }
 }

@@ -11,7 +11,7 @@ struct ContentView: View {
     var body: some View {
         DebugDisplay()
         .padding()
-        .font(.title2.monospacedDigit())
+        
         
     }
 }
