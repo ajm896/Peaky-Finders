@@ -9,8 +9,6 @@ import Foundation
 import CoreLocation
 import Observation
 
-let earthRadius = 6_371_000.0
-
 extension BinaryFloatingPoint {
     var radians: Self { self * .pi / 180 }
     var degrees: Self { self * 180 / .pi }
@@ -67,9 +65,4 @@ final class LocationProvider: NSObject, CLLocationManagerDelegate {
 struct Peak {
     var name: String
     var locationCoordinates: CLLocationCoordinate2D
-    
-    init(name: String, locationCoordinates: CLLocationCoordinate2D) {
-        self.name = name
-        self.locationCoordinates = locationCoordinates
-    }
 }
