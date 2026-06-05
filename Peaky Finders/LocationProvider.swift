@@ -51,15 +51,7 @@ final class LocationProvider: NSObject, CLLocationManagerDelegate {
         print("Core Location Error: \(error.localizedDescription)")
     }
     
-    func bearing(from start: CLLocationCoordinate2D, to end: CLLocationCoordinate2D) -> CLLocationDirection {
-        let midLat = (start.latitude + end.latitude) / 2
-        let dx = (end.longitude - start.longitude) * cos(midLat.radians)
-        let dy = end.latitude - start.latitude
-        
-        let a = 90 - atan2(dy,dx).degrees
-        
-        return (a + 360).truncatingRemainder(dividingBy: 360)
-    }
+    
 }
 
 

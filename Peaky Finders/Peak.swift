@@ -14,6 +14,16 @@ let waterRockCoordinates = CLLocationCoordinate2D(latitude: 35.46412, longitude:
 struct Peak {
     var name: String
     var locationCoordinates: CLLocationCoordinate2D
+    
+    func bearing(from start: CLLocationCoordinate2D) -> CLLocationDirection {
+        let midLat = (start.latitude + self.locationCoordinates.latitude) / 2
+        let dx = (self.locationCoordinates.longitude - start.longitude) * cos(midLat.radians)
+        let dy = self.locationCoordinates.latitude - start.latitude
+        
+        let a = 90 - atan2(dy,dx).degrees
+        
+        return (a + 360).truncatingRemainder(dividingBy: 360)
+    }
 }
 
 struct PeakDisplay: View {

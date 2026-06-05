@@ -25,9 +25,9 @@ struct HeadingDisplay: View {
             if let relativeBearing {
                 Image(systemName: "location.north.line").font(.system(size: 80)).rotationEffect(.degrees(relativeBearing))
             } else {
-                Image("xmark.circle")
+                Image(systemName: "xmark.circle")
             }
-            if let heading = heading {
+            if let heading = self.heading {
                 Text("Heading: \(heading, specifier: "%.0f")°")
             } else {
                 Text("No heading available")

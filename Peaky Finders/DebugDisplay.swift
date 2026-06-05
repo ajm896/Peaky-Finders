@@ -7,50 +7,38 @@
 import SwiftUI
 import CoreLocation
 
-let mountMitchell = CLLocationCoordinate2D(latitude: 35.764839, longitude: -82.2651221)
-let waterRock = CLLocationCoordinate2D(latitude: 35.46412, longitude: -83.13772)
-
 struct DebugDisplay: View {
-    @State private var locationProvider = LocationProvider()
-    @State private var targetPeak = Peak(name: "Mt. Mitchell", locationCoordinates: mountMitchell)
+    var targetPeak: Peak
+    let currentLocation: CLLocation
+    let heading: Double
     
-    var body: some View{
+    var bearing: Double{
+        targetPeak.bearing(from: currentLocation.coordinate)
+    }
+    
+    var distance: CLLocationDistance {
+        self.currentLocation.distance(
+            from: CLLocation(
+                latitude: targetPeak.locationCoordinates.latitude,
+                longitude: targetPeak.locationCoordinates.longitude
+        ))
+    }
+    
+    var body: some View {
         VStack {
-            switch locationProvider.authorizationStatus {
-            case .notDetermined:
-                Text("Requesting location access")
-            case .restricted, .denied:
-                Text("Location Access Denied")
-            default:
-                if let currentLocation = locationProvider.currentLocation {
-                    let bearing = locationProvider.bearing(
-                        from: currentLocation.coordinate,
-                        to: targetPeak.locationCoordinates
-                    )
-                    let distance = locationProvider.currentLocation?.distance(
-                        from: CLLocation(
-                            latitude: targetPeak.locationCoordinates.latitude,
-                            longitude: targetPeak.locationCoordinates.longitude
-                    ))
-                    
-                    HeadingDisplay(bearingToTarget: bearing, heading: locationProvider.heading)
-                    PeakDisplay(peak: targetPeak)
-                    DistanceDisplay(distance: distance, targetPeak: targetPeak)
-                } else {
-                    Text("Waiting for location")
-                }
-                
-                Button("Change Peak") {
-                    if targetPeak.name == "Mt. Mitchell" {
-                        targetPeak = Peak(name: "Water Rock", locationCoordinates: waterRock)
-                    } else {
-                        targetPeak = Peak(name: "Mt. Mitchell", locationCoordinates: mountMitchell)
-                    }
-                }.padding(12)
-            }
-        }
-        .onAppear {
-            locationProvider.start()
+            HeadingDisplay(bearingToTarget: self.bearing, heading: self.heading)
+            PeakDisplay(peak: targetPeak)
+            DistanceDisplay(distance: distance, targetPeak: targetPeak)
         }
     }
 }
+
+let officeLocationDebug = CLLocation(latitude: 35.48526, longitude: -82.55424)
+let duckerMountainDebug: Peak = Peak(name: "Ducker Mountain ",
+                                locationCoordinates: CLLocationCoordinate2D(latitude: 35.49457, longitude: -82.55352))
+#Preview {
+    DebugDisplay(targetPeak: duckerMountainDebug, currentLocation: officeLocationDebug, heading: 234)
+}
+
+
+
