@@ -38,14 +38,10 @@ struct PeakDisplay: View {
 }
 
 struct DistanceDisplay: View {
-    let distance: CLLocationDistance?
+    let distance: CLLocationDistance
     let targetPeak: Peak
     var body: some View {
-        if let distance {
-            Text("Dist to \(targetPeak.name): \(distance/1000, specifier: "%.2f") km")
-        } else {
-            Text("Location not Found")
-        }
+        Text("Dist to \(targetPeak.name): \(distance/1000, specifier: "%.2f") km")
     }
 }
 

@@ -23,7 +23,9 @@ struct HeadingDisplay: View {
     var body: some View {
         VStack{
             if let relativeBearing {
-                Image(systemName: "location.north.line").font(.system(size: 80)).rotationEffect(.degrees(relativeBearing))
+                Image(systemName: "location.north.line")
+                    .font(.system(size: 80))
+                    .rotationEffect(.degrees(relativeBearing))
             } else {
                 Image(systemName: "xmark.circle")
             }
