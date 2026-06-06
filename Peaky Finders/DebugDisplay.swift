@@ -34,10 +34,7 @@ struct BundleDebugDisplay: View {
                         bearingToTarget: currentLocation.coordinate.bearing(to: peak.locationCoordinates),
                         currentHeading: heading)
                     Text(peak.name)
-                    DistanceDisplay(distance: currentLocation.distance(
-                        from: CLLocation(latitude: peak.locationCoordinates.latitude,
-                                         longitude: peak.locationCoordinates.longitude)),
-                                    targetPeak: peak)
+                    DistanceDisplay(distance: currentLocation.distance(from: peak.location), targetPeak: peak)
                 }
             }.padding(12)
         }

@@ -17,6 +17,7 @@ struct Peak: Codable, Identifiable {
     var locationCoordinates: CLLocationCoordinate2D {
         CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     }
+    var location: CLLocation { CLLocation(latitude: latitude, longitude: longitude) }
 }
 
 // MARK: - Known peaks
@@ -25,12 +26,12 @@ extension Peak {
     /// Single source of truth for the peaks the app knows about, so coordinates
     /// are never duplicated across views and previews.
     static let mountMitchell = Peak(
-        name: "Mt. Mitchell",
+        name: "Mount Mitchell",
         latitude: 35.764839,
         longitude: -82.2651221
     )
     static let waterRock = Peak(
-        name: "Water Rock",
+        name: "Waterrock",
         latitude: 35.46412,
         longitude: -83.13772
     )
