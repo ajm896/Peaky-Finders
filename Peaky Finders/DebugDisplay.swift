@@ -13,7 +13,8 @@ struct DebugDisplay: View {
     let heading: Double
     
     var bearing: Double{
-        targetPeak.bearing(from: currentLocation.coordinate)
+        //targetPeak.bearing(from: currentLocation.coordinate)
+        currentLocation.coordinate.bearing(to: targetPeak.locationCoordinates)
     }
     
     var distance: CLLocationDistance {

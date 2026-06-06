@@ -39,5 +39,5 @@ struct HeadingDisplay: View {
 }
 
 #Preview {
-    HeadingDisplay(bearingToTarget: 267, heading: 213)
+    HeadingDisplay(bearingToTarget: 267, heading: 286)
 }

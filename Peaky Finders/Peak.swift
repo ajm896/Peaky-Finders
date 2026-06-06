@@ -26,6 +26,26 @@ struct Peak {
     }
 }
 
+extension BinaryFloatingPoint {
+    var radians: Self { self * .pi / 180 }
+    var degrees: Self { self * 180 / .pi }
+}
+
+extension CLLocationCoordinate2D {
+    func bearing(to other: CLLocationCoordinate2D) -> Double {
+        let deltaLon = other.longitude.radians - self.longitude.radians
+        let phi1 = self.latitude.radians
+        let phi2 = other.latitude.radians
+        
+        let term1 = sin(deltaLon) * cos(phi2)
+        let term2 = cos(phi1) * sin(phi2) - (sin(phi1) * cos(phi2) * cos(deltaLon))
+        
+        let theta = atan2(term1, term2)
+        
+        return (theta.degrees + 360).truncatingRemainder(dividingBy: 360)
+    }
+}
+
 struct PeakDisplay: View {
     let peak: Peak
     var body: some View {

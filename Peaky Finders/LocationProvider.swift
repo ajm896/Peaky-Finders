@@ -9,10 +9,7 @@ import Foundation
 import CoreLocation
 import Observation
 
-extension BinaryFloatingPoint {
-    var radians: Self { self * .pi / 180 }
-    var degrees: Self { self * 180 / .pi }
-}
+
 
 @Observable
 final class LocationProvider: NSObject, CLLocationManagerDelegate {
