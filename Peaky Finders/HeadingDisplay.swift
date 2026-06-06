@@ -8,10 +8,15 @@
 import SwiftUI
 import CoreLocation
 
+/// Arrow that points from the device's current facing direction (`heading`)
+/// toward the target peak's `bearingToTarget`. Rotating by the difference means
+/// the arrow points straight up when the user is facing the peak.
 struct HeadingDisplay: View {
     var bearingToTarget: Double
     var heading: Double?
-    
+
+    /// How far (degrees clockwise) to rotate the arrow so it points at the
+    /// target, or `nil` while no heading is available.
     var relativeBearing: Double? {
         if let heading = self.heading{
             ((bearingToTarget - heading) + 360).truncatingRemainder(dividingBy: 360)
