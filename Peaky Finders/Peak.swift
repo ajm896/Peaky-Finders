@@ -9,9 +9,14 @@ import SwiftUI
 import CoreLocation
 
 /// A named geographic summit the app can point the user toward.
-struct Peak {
+struct Peak: Codable, Identifiable {
+    var id: String { name }
     var name: String
-    var locationCoordinates: CLLocationCoordinate2D
+    var latitude: Double
+    var longitude: Double
+    var locationCoordinates: CLLocationCoordinate2D {
+        CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    }
 }
 
 // MARK: - Known peaks
@@ -21,15 +26,18 @@ extension Peak {
     /// are never duplicated across views and previews.
     static let mountMitchell = Peak(
         name: "Mt. Mitchell",
-        locationCoordinates: CLLocationCoordinate2D(latitude: 35.764839, longitude: -82.2651221)
+        latitude: 35.764839,
+        longitude: -82.2651221
     )
     static let waterRock = Peak(
         name: "Water Rock",
-        locationCoordinates: CLLocationCoordinate2D(latitude: 35.46412, longitude: -83.13772)
+        latitude: 35.46412,
+        longitude: -83.13772
     )
     static let duckerMountain = Peak(
         name: "Ducker Mountain",
-        locationCoordinates: CLLocationCoordinate2D(latitude: 35.49457, longitude: -82.55352)
+        latitude: 35.49457,
+        longitude: -82.55352
     )
 }
 
