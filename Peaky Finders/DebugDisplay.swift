@@ -1,5 +1,5 @@
 //
-//  LocDisplay.swift
+//  DebugDisplay.swift
 //  Peaky Finders
 //
 //  Created by Albert Morris on 6/4/26.
@@ -7,38 +7,48 @@
 import SwiftUI
 import CoreLocation
 
+/// Combined readout of where the target peak is: a pointing arrow (heading vs.
+/// bearing), the peak's coordinates, and the straight-line distance to it.
 struct DebugDisplay: View {
-    var targetPeak: Peak
     let currentLocation: CLLocation
     let heading: Double
-    
-    var bearing: Double{
-        targetPeak.bearing(from: currentLocation.coordinate)
-    }
-    
-    var distance: CLLocationDistance {
-        self.currentLocation.distance(
-            from: CLLocation(
-                latitude: targetPeak.locationCoordinates.latitude,
-                longitude: targetPeak.locationCoordinates.longitude
-        ))
-    }
-    
+
     var body: some View {
         VStack {
-            HeadingDisplay(bearingToTarget: self.bearing, heading: self.heading)
-            PeakDisplay(peak: targetPeak)
-            DistanceDisplay(distance: distance, targetPeak: targetPeak)
+            HeadingDisplay(heading: self.heading)
+            BundleDebugDisplay(currentLocation: currentLocation, heading: heading)
         }
     }
 }
 
-let officeLocationDebug = CLLocation(latitude: 35.48526, longitude: -82.55424)
-let duckerMountainDebug: Peak = Peak(name: "Ducker Mountain ",
-                                locationCoordinates: CLLocationCoordinate2D(latitude: 35.49457, longitude: -82.55352))
-#Preview {
-    DebugDisplay(targetPeak: duckerMountainDebug, currentLocation: officeLocationDebug, heading: 234)
+struct BundleDebugDisplay: View {
+    let currentLocation: CLLocation
+    var heading: Double = 0
+    var peaks = Peak.loadBundled()
+    
+    var body: some View {
+        ScrollView{
+            ForEach(peaks) { peak in
+                VStack {
+                    BearingDisplay(
+                        bearingToTarget: currentLocation.coordinate.bearing(to: peak.locationCoordinates),
+                        currentHeading: heading)
+                    Text(peak.name)
+                    DistanceDisplay(distance: currentLocation.distance(
+                        from: CLLocation(latitude: peak.locationCoordinates.latitude,
+                                         longitude: peak.locationCoordinates.longitude)),
+                                    targetPeak: peak)
+                }
+            }.padding(12)
+        }
+    }
 }
 
+/// Sample observer location used only by the preview below.
+let officeLocationDebug = CLLocation(latitude: 35.48526, longitude: -82.55424)
+let homeOfficeDebug = CLLocation(latitude:35.47008, longitude: -82.98816)
 
+#Preview {
+    DebugDisplay(currentLocation: homeOfficeDebug, heading: 234)
+}
 

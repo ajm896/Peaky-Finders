@@ -8,13 +8,10 @@
 import SwiftUI
 import CoreLocation
 
-let mountMitchell = CLLocationCoordinate2D(latitude: 35.764839, longitude: -82.2651221)
-let waterRock = CLLocationCoordinate2D(latitude: 35.46412, longitude: -83.13772)
-let duckerMountain = CLLocationCoordinate2D(latitude: 35.49457, longitude: -82.55352)
-
+/// Root view. Drives location/heading acquisition and, once both are available,
+/// shows the bearing and distance to the target peak.
 struct ContentView: View {
     @State private var locationProvider = LocationProvider()
-    @State private var target = Peak(name: "Ducker Mountain", locationCoordinates: duckerMountain)
     
     var body: some View {
         VStack{
@@ -27,7 +24,6 @@ struct ContentView: View {
                 if let currentLocation = locationProvider.currentLocation {
                     if let heading = locationProvider.heading {
                         DebugDisplay(
-                            targetPeak: target,
                             currentLocation: currentLocation,
                             heading: heading,
                         )
