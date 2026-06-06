@@ -12,8 +12,7 @@ import CoreLocation
 /// shows the bearing and distance to the target peak.
 struct ContentView: View {
     @State private var locationProvider = LocationProvider()
-    @State private var target = Peak.duckerMountain
-
+    
     var body: some View {
         VStack{
             switch locationProvider.authorizationStatus {
@@ -25,7 +24,6 @@ struct ContentView: View {
                 if let currentLocation = locationProvider.currentLocation {
                     if let heading = locationProvider.heading {
                         DebugDisplay(
-                            targetPeak: target,
                             currentLocation: currentLocation,
                             heading: heading,
                         )

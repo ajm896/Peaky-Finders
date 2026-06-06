@@ -83,15 +83,6 @@ struct PeakDisplay: View {
     }
 }
 
-/// Shows the distance to a peak, formatted in kilometres.
-struct DistanceDisplay: View {
-    let distance: CLLocationDistance
-    let targetPeak: Peak
-    var body: some View {
-        Text("Dist to \(targetPeak.name): \(distance / 1000, specifier: "%.2f") km")
-    }
-}
-
 #Preview {
     PeakDisplay(peak: .mountMitchell)
 }

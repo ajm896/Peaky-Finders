@@ -1,0 +1,12 @@
+[
+  { "name": "Mount Mitchell",     "latitude": 35.764839,  "longitude": -82.2651221 },
+  { "name": "Celo Knob",          "latitude": 35.85222,   "longitude": -82.24861 },
+  { "name": "Waterrock Knob",     "latitude": 35.46412,   "longitude": -83.13772 },
+  { "name": "Cold Mountain",      "latitude": 35.40944,   "longitude": -82.85611 },
+  { "name": "Mount Pisgah",       "latitude": 35.4255,    "longitude": -82.7569 },
+  { "name": "Shining Rock",       "latitude": 35.36806,   "longitude": -82.86222 },
+  { "name": "Richland Balsam",    "latitude": 35.3671315, "longitude": -82.9900864 },
+  { "name": "Black Balsam Knob",  "latitude": 35.3278842, "longitude": -82.8742978 },
+  { "name": "Devil's Courthouse", "latitude": 35.30250,   "longitude": -82.89556 },
+  { "name": "Tanasee Bald",       "latitude": 35.29177,   "longitude": -82.91763 }
+]
