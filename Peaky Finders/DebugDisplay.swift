@@ -12,11 +12,12 @@ import CoreLocation
 struct DebugDisplay: View {
     let currentLocation: CLLocation
     let heading: Double
+    let peaks: [Peak]
 
     var body: some View {
         VStack {
             HeadingDisplay(heading: self.heading)
-            BundleDebugDisplay(currentLocation: currentLocation, heading: heading)
+            BundleDebugDisplay(currentLocation: currentLocation, heading: heading, peaks: peaks)
         }
     }
 }
@@ -24,14 +25,14 @@ struct DebugDisplay: View {
 struct BundleDebugDisplay: View {
     let currentLocation: CLLocation
     var heading: Double = 0
-    var peaks = Peak.loadBundled()
+    var peaks: [Peak]
     
     var body: some View {
         ScrollView{
             ForEach(peaks) { peak in
                 VStack {
                     BearingDisplay(
-                        bearingToTarget: currentLocation.coordinate.bearing(to: peak.locationCoordinates),
+                        bearingToTarget: peak.bearing(from: currentLocation.coordinate),
                         currentHeading: heading)
                     Text(peak.name)
                     DistanceDisplay(distance: currentLocation.distance(from: peak.location), targetPeak: peak)
@@ -46,6 +47,6 @@ let officeLocationDebug = CLLocation(latitude: 35.48526, longitude: -82.55424)
 let homeOfficeDebug = CLLocation(latitude:35.47008, longitude: -82.98816)
 
 #Preview {
-    DebugDisplay(currentLocation: homeOfficeDebug, heading: 234)
+    DebugDisplay(currentLocation: homeOfficeDebug, heading: 0, peaks: Peak.loadBundled())
 }
 

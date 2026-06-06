@@ -12,6 +12,7 @@ import CoreLocation
 /// shows the bearing and distance to the target peak.
 struct ContentView: View {
     @State private var locationProvider = LocationProvider()
+    @State var peaks = Peak.loadBundled()
     
     var body: some View {
         VStack{
@@ -26,6 +27,7 @@ struct ContentView: View {
                         DebugDisplay(
                             currentLocation: currentLocation,
                             heading: heading,
+                            peaks: peaks,
                         )
                     } else {
                         Text("Aquiring heading...")
