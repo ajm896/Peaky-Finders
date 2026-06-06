@@ -39,7 +39,6 @@ struct BearingDisplay: View {
 /// Shows the distance to a peak, formatted in kilometres.
 struct DistanceDisplay: View {
     let distance: CLLocationDistance
-    let targetPeak: Peak
     var displayUnit: UnitLength = .kilometers
     
     var measurement: Measurement<UnitLength> {
@@ -47,7 +46,7 @@ struct DistanceDisplay: View {
     }
     
     var body: some View {
-        Text("Dist to \(targetPeak.name): \(measurement, format: .measurement(width: .abbreviated))")
+        Text("\(measurement, format: .measurement(width: .abbreviated))")
     }
 }
 
@@ -56,6 +55,6 @@ struct DistanceDisplay: View {
     VStack{
         HeadingDisplay(heading: 0)
         BearingDisplay(bearingToTarget: 90, currentHeading: 0)
-        DistanceDisplay(distance: 1200, targetPeak: .duckerMountain)
+        DistanceDisplay(distance: 1200)
     }
 }
