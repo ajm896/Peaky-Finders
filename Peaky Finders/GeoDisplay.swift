@@ -7,7 +7,7 @@
 
 import SwiftUI
 import CoreLocation
-
+import Foundation
 /// Arrow that points from the device's current facing direction (`heading`)
 /// toward the target peak's `bearingToTarget`. Rotating by the difference means
 /// the arrow points straight up when the user is facing the peak.
@@ -40,8 +40,14 @@ struct BearingDisplay: View {
 struct DistanceDisplay: View {
     let distance: CLLocationDistance
     let targetPeak: Peak
+    var displayUnit: UnitLength = .kilometers
+    
+    var measurement: Measurement<UnitLength> {
+        Measurement(value: distance, unit: .meters).converted(to: displayUnit)
+    }
+    
     var body: some View {
-        Text("Dist to \(targetPeak.name): \(distance / 1000, specifier: "%.2f") km")
+        Text("Dist to \(targetPeak.name): \(measurement, format: .measurement(width: .abbreviated))")
     }
 }
 
@@ -50,5 +56,6 @@ struct DistanceDisplay: View {
     VStack{
         HeadingDisplay(heading: 0)
         BearingDisplay(bearingToTarget: 90, currentHeading: 0)
+        DistanceDisplay(distance: 1200, targetPeak: .duckerMountain)
     }
 }
