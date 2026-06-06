@@ -14,10 +14,18 @@ struct Peak: Codable, Identifiable {
     var name: String
     var latitude: Double
     var longitude: Double
-    var locationCoordinates: CLLocationCoordinate2D {
+    var coordinate: CLLocationCoordinate2D {
         CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     }
-    var location: CLLocation { CLLocation(latitude: latitude, longitude: longitude) }
+    var location: CLLocation { CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude) }
+    
+    func bearing(from userLoc: CLLocationCoordinate2D) -> Double {
+        userLoc.bearing(to: self.coordinate)
+    }
+    
+    func distance(from userLoc: CLLocation) -> CLLocationDistance {
+        userLoc.distance(from: self.location)
+    }
 }
 
 // MARK: - Known peaks
@@ -78,8 +86,8 @@ struct PeakDisplay: View {
     var body: some View {
         VStack {
             Text("\(peak.name)")
-            Text("Lat: \(peak.locationCoordinates.latitude)")
-            Text("Lon: \(peak.locationCoordinates.longitude)")
+            Text("Lat: \(peak.coordinate.latitude)")
+            Text("Lon: \(peak.coordinate.longitude)")
         }.padding(12).font(.title2.monospacedDigit())
     }
 }

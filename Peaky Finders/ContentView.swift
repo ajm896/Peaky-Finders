@@ -7,12 +7,14 @@
 
 import SwiftUI
 import CoreLocation
+import MapKit
 
 /// Root view. Drives location/heading acquisition and, once both are available,
 /// shows the bearing and distance to the target peak.
 struct ContentView: View {
     @State private var locationProvider = LocationProvider()
-    @State var peaks = Peak.loadBundled()
+    @State var sightingRange: CLLocationDistance = 50_000
+    
     
     var body: some View {
         VStack{
@@ -24,11 +26,8 @@ struct ContentView: View {
             default:
                 if let currentLocation = locationProvider.currentLocation {
                     if let heading = locationProvider.heading {
-                        DebugDisplay(
-                            currentLocation: currentLocation,
-                            heading: heading,
-                            peaks: peaks,
-                        )
+                        let sightings: [Sighting] = PeakCatalog.all.sightings(from: currentLocation, within: sightingRange)
+                        PeakListUI(sightings: sightings, userLocation: currentLocation, heading: heading, sightingRange: $sightingRange)
                     } else {
                         Text("Aquiring heading...")
                     }
@@ -36,13 +35,12 @@ struct ContentView: View {
                     Text("Aquiring location...")
                 }
             }
+            
         }.onAppear {
             locationProvider.start()
         }
     }
 }
-
-
 
 #Preview {
     ContentView()
