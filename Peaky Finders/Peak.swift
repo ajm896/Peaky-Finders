@@ -8,48 +8,66 @@
 import SwiftUI
 import CoreLocation
 
-let mountMitchellCoordinates = CLLocationCoordinate2D(latitude: 35.764839, longitude: -82.2651221)
-let waterRockCoordinates = CLLocationCoordinate2D(latitude: 35.46412, longitude: -83.13772)
-
+/// A named geographic summit the app can point the user toward.
 struct Peak {
     var name: String
     var locationCoordinates: CLLocationCoordinate2D
-    
-    func bearing(from start: CLLocationCoordinate2D) -> CLLocationDirection {
-        let midLat = (start.latitude + self.locationCoordinates.latitude) / 2
-        let dx = (self.locationCoordinates.longitude - start.longitude) * cos(midLat.radians)
-        let dy = self.locationCoordinates.latitude - start.latitude
-        
-        let a = 90 - atan2(dy,dx).degrees
-        
-        return (a + 360).truncatingRemainder(dividingBy: 360)
-    }
 }
 
+// MARK: - Known peaks
+
+extension Peak {
+    /// Single source of truth for the peaks the app knows about, so coordinates
+    /// are never duplicated across views and previews.
+    static let mountMitchell = Peak(
+        name: "Mt. Mitchell",
+        locationCoordinates: CLLocationCoordinate2D(latitude: 35.764839, longitude: -82.2651221)
+    )
+    static let waterRock = Peak(
+        name: "Water Rock",
+        locationCoordinates: CLLocationCoordinate2D(latitude: 35.46412, longitude: -83.13772)
+    )
+    static let duckerMountain = Peak(
+        name: "Ducker Mountain",
+        locationCoordinates: CLLocationCoordinate2D(latitude: 35.49457, longitude: -82.55352)
+    )
+}
+
+// MARK: - Angle conversions
+
 extension BinaryFloatingPoint {
+    /// This value, interpreted as degrees, converted to radians.
     var radians: Self { self * .pi / 180 }
+    /// This value, interpreted as radians, converted to degrees.
     var degrees: Self { self * 180 / .pi }
 }
 
+// MARK: - Bearing
+
 extension CLLocationCoordinate2D {
+    /// Initial great-circle bearing (degrees clockwise from true north, 0..<360)
+    /// from this coordinate to `other`.
     func bearing(to other: CLLocationCoordinate2D) -> Double {
         let deltaLon = other.longitude.radians - self.longitude.radians
         let phi1 = self.latitude.radians
         let phi2 = other.latitude.radians
-        
+
         let term1 = sin(deltaLon) * cos(phi2)
         let term2 = cos(phi1) * sin(phi2) - (sin(phi1) * cos(phi2) * cos(deltaLon))
-        
+
         let theta = atan2(term1, term2)
-        
+
         return (theta.degrees + 360).truncatingRemainder(dividingBy: 360)
     }
 }
 
+// MARK: - Views
+
+/// Shows a peak's name and raw coordinates.
 struct PeakDisplay: View {
     let peak: Peak
     var body: some View {
-        VStack{
+        VStack {
             Text("\(peak.name)")
             Text("Lat: \(peak.locationCoordinates.latitude)")
             Text("Lon: \(peak.locationCoordinates.longitude)")
@@ -57,15 +75,15 @@ struct PeakDisplay: View {
     }
 }
 
+/// Shows the distance to a peak, formatted in kilometres.
 struct DistanceDisplay: View {
     let distance: CLLocationDistance
     let targetPeak: Peak
     var body: some View {
-        Text("Dist to \(targetPeak.name): \(distance/1000, specifier: "%.2f") km")
+        Text("Dist to \(targetPeak.name): \(distance / 1000, specifier: "%.2f") km")
     }
 }
 
 #Preview {
-    PeakDisplay(peak: Peak(name: "Mt. Mitchell",
-                locationCoordinates: mountMitchellCoordinates))
+    PeakDisplay(peak: .mountMitchell)
 }
