@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreLocation
+import MapKit
 
 /// A named geographic summit the app can point the user toward.
 struct Peak: Codable, Identifiable {
@@ -33,17 +34,17 @@ struct Peak: Codable, Identifiable {
 extension Peak {
     /// Single source of truth for the peaks the app knows about, so coordinates
     /// are never duplicated across views and previews.
-    static let mountMitchell = Peak(
+    static let mountMitchellDebug = Peak(
         name: "Mount Mitchell",
         latitude: 35.764839,
         longitude: -82.2651221
     )
-    static let waterRock = Peak(
+    static let waterrockDebug = Peak(
         name: "Waterrock",
         latitude: 35.46412,
         longitude: -83.13772
     )
-    static let duckerMountain = Peak(
+    static let duckerMountainDebug = Peak(
         name: "Ducker Mountain",
         latitude: 35.49457,
         longitude: -82.55352
@@ -88,10 +89,14 @@ struct PeakDisplay: View {
             Text("\(peak.name)")
             Text("Lat: \(peak.coordinate.latitude)")
             Text("Lon: \(peak.coordinate.longitude)")
+            Map {
+                Marker(peak.name, coordinate: peak.coordinate)
+                UserAnnotation()
+            }.mapStyle(.imagery)
         }.padding(12).font(.title2.monospacedDigit())
     }
 }
 
 #Preview {
-    PeakDisplay(peak: .mountMitchell)
+    PeakDisplay(peak: .mountMitchellDebug)
 }
