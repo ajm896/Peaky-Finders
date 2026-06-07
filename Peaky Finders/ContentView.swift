@@ -13,17 +13,13 @@ import MapKit
 /// shows the bearing and distance to the target peak.
 struct ContentView: View {
     @State private var locationProvider = LocationProvider()
-    @State var sightingRange: CLLocationDistance = 50_000
+    @State private var sightingRange: CLLocationDistance = 100_000
     
     
     var body: some View {
         VStack{
             switch locationProvider.authorizationStatus {
-            case .notDetermined:
-                Text("Requesting location access")
-            case .restricted, .denied:
-                Text("Location Access Denied")
-            default:
+            case .authorizedAlways, .authorizedWhenInUse:
                 if let currentLocation = locationProvider.currentLocation {
                     if let heading = locationProvider.heading {
                         let sightings: [Sighting] = PeakCatalog.all.sightings(from: currentLocation, within: sightingRange)
@@ -34,6 +30,12 @@ struct ContentView: View {
                 } else {
                     Text("Aquiring location...")
                 }
+            case .notDetermined:
+                Text("Requesting location access")
+            case .restricted, .denied:
+                Text("Location Access Denied")
+            default:
+                fatalError("Something wrong with authorization")
             }
             
         }.onAppear {
