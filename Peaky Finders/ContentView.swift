@@ -34,10 +34,9 @@ struct ContentView: View {
                 Text("Requesting location access")
             case .restricted, .denied:
                 Text("Location Access Denied")
-            default:
-                fatalError("Something wrong with authorization")
+            @unknown default:
+                Text("Unknown Error")
             }
-            
         }.onAppear {
             locationProvider.start()
         }
