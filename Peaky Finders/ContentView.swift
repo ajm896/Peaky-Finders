@@ -23,7 +23,7 @@ struct ContentView: View {
                 if let currentLocation = locationProvider.currentLocation {
                     if let heading = locationProvider.heading {
                         let sightings: [Sighting] = PeakCatalog.all.sightings(from: currentLocation, within: sightingRange)
-                        PeakListUI(sightings: sightings, userLocation: currentLocation, heading: heading, sightingRange: $sightingRange)
+                        SightingsMapView(sightings: sightings, heading: heading, userLocation: currentLocation, sightingRange: $sightingRange)
                     } else {
                         Text("Aquiring heading...")
                     }
