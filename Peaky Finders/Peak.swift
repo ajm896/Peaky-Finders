@@ -82,7 +82,7 @@ extension CLLocationCoordinate2D {
 // MARK: - Views
 
 /// Shows a peak's name and raw coordinates.
-struct PeakDisplay: View {
+struct PeakView: View {
     let peak: Peak
     var body: some View {
         VStack {
@@ -98,5 +98,16 @@ struct PeakDisplay: View {
 }
 
 #Preview {
-    PeakDisplay(peak: .mountMitchellDebug)
+    PeakView(peak: .mountMitchellDebug)
+}
+
+extension Collection where Element == Peak {
+    func sightings(from location: CLLocation, within range: CLLocationDistance = .greatestFiniteMagnitude) -> [Sighting] {
+        compactMap { peak in
+                let distance = peak.distance(from: location)
+                guard distance <= range else { return nil }
+                return Sighting(peak: peak, bearing: peak.bearing(from: location.coordinate), distance: distance)
+            }
+            .sorted { $0.bearing < $1.bearing }
+    }
 }
