@@ -61,5 +61,5 @@ struct SightingsMapView: View {
 }
 
 #Preview {
-    //SightingsMapView(sightings: PeakCatalog.all.sightings(from: homeOfficeDebug, within: 50_000), heading: 0, userLocation: homeOfficeDebug, sightingRange: .init(peak: 50_000, bearing: 0, distance: 50_000))
+SightingsMapView(sightings: PeakCatalog.all.sightings(from: homeOfficeDebug, within: 50_000), heading: 0, userLocation: homeOfficeDebug, sightingRange: .constant(50_000))
 }
