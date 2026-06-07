@@ -8,31 +8,32 @@
 import SwiftUI
 import CoreLocation
 import Foundation
-/// Arrow that points from the device's current facing direction (`heading`)
-/// toward the target peak's `bearingToTarget`. Rotating by the difference means
-/// the arrow points straight up when the user is facing the peak.
+/// Numeric readout of the device's current true-north heading in degrees.
 struct HeadingDisplay: View {
     var heading: Double
-    
+
     var body: some View {
         Text("Heading: \(heading, specifier: "%.0f")°")
             .font(.title2.monospacedDigit())
     }
 }
 
+/// Compass arrow that points toward a target peak relative to the direction the
+/// device is currently facing. The arrow reads straight up when the user is
+/// facing the peak directly.
 struct BearingDisplay: View {
     var bearingToTarget: Double
     var currentHeading: Double
+    /// Clockwise angle from the device's current facing direction to the peak.
+    /// Adding 360 before the modulo keeps the result in 0..<360 even when
+    /// `bearingToTarget` is less than `currentHeading`.
     var relativeBearing: Double {
         ((bearingToTarget - currentHeading) + 360).truncatingRemainder(dividingBy: 360)
     }
     var body: some View {
-        VStack{
-            //Text("Bearing: \(bearingToTarget, specifier: "%.0f")°")
-            Image(systemName: "location.north.line")
-                .font(.system(size: 80))
-                .rotationEffect(.degrees(relativeBearing))
-        }
+        Image(systemName: "location.north.line")
+            .font(.system(size: 80))
+            .rotationEffect(.degrees(relativeBearing))
     }
 }
 

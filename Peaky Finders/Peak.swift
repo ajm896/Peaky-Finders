@@ -10,7 +10,12 @@ import CoreLocation
 import MapKit
 
 /// A named geographic summit the app can point the user toward.
+///
+/// Decoded from `peaks.json` at runtime. `latitude`/`longitude` are stored as
+/// plain `Double` so they round-trip cleanly through `Codable`; `coordinate`
+/// and `location` are derived on demand.
 struct Peak: Codable, Identifiable, Hashable {
+    /// Stable identifier — the peak's name. Peak names in `peaks.json` must be unique.
     var id: String { name }
     var name: String
     var latitude: Double
@@ -18,12 +23,15 @@ struct Peak: Codable, Identifiable, Hashable {
     var coordinate: CLLocationCoordinate2D {
         CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     }
+    /// Altitude-free `CLLocation` used only for distance calculations.
     var location: CLLocation { CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude) }
-    
+
+    /// Great-circle bearing from `userLoc` to this peak, degrees clockwise from true north.
     func bearing(from userLoc: CLLocationCoordinate2D) -> Double {
         userLoc.bearing(to: self.coordinate)
     }
-    
+
+    /// Straight-line distance (meters) from `userLoc` to this peak.
     func distance(from userLoc: CLLocation) -> CLLocationDistance {
         userLoc.distance(from: self.location)
     }
@@ -32,8 +40,8 @@ struct Peak: Codable, Identifiable, Hashable {
 // MARK: - Known peaks
 
 extension Peak {
-    /// Single source of truth for the peaks the app knows about, so coordinates
-    /// are never duplicated across views and previews.
+    /// Canonical preview/debug coordinates. Keep coordinates here rather than
+    /// inlining literals in individual previews so there is one place to update them.
     static let mountMitchellDebug = Peak(
         name: "Mount Mitchell",
         latitude: 35.764839,
@@ -102,6 +110,9 @@ struct PeakView: View {
 }
 
 extension Collection where Element == Peak {
+    /// Returns sightings for all peaks within `range` meters of `location`,
+    /// sorted by bearing (clockwise from north) so the list reads left-to-right
+    /// around the compass. Bearing and distance are frozen at call time.
     func sightings(from location: CLLocation, within range: CLLocationDistance = .greatestFiniteMagnitude) -> [Sighting] {
         compactMap { peak in
                 let distance = peak.distance(from: location)

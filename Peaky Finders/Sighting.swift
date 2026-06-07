@@ -9,6 +9,9 @@ import CoreLocation
 import MapKit
 
 
+/// A snapshot of a peak's bearing and distance as computed from a specific user
+/// location at a specific moment. Values are immutable after construction so a
+/// list of sightings stays consistent even as the device moves.
 struct Sighting: Identifiable, Hashable {
     let peak: Peak
     let bearing: CLLocationDirection   // degrees clockwise from true north, frozen at construction
@@ -16,6 +19,8 @@ struct Sighting: Identifiable, Hashable {
     var id: Peak.ID { peak.id }
 }
 
+/// Detail sheet shown when the user taps a peak marker on the map. Displays a
+/// live bearing arrow, distance, and a satellite map framing the user and peak.
 struct SightingView: View {
     var sighting: Sighting
     var heading: CLLocationDirection
