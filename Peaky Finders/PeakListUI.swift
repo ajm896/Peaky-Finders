@@ -17,25 +17,27 @@ struct PeakListUI: View {
     var body: some View {
         
         NavigationStack {
-            SightingsMapView(sightings: sightings)
-            ForEach(sightings) { sighting in
-                NavigationLink{
-                    SightingView(sighting: sighting, heading: heading)
-                } label: {
-                    HStack{
-                        Text(sighting.peak.name)
-                            .font(.headline)
-                        DistanceDisplay(distance: sighting.distance)
+            VStack {
+                SightingsMapView(sightings: sightings)
+                List(sightings) { sighting in
+                    NavigationLink{
+                        SightingView(sighting: sighting, heading: heading)
+                    } label: {
+                        HStack{
+                            Text(sighting.peak.name)
+                                .font(.headline)
+                            DistanceDisplay(distance: sighting.distance)
+                        }
                     }
                 }
+                Slider(value: $sightingRange, in: 0...100_000, step: 100) {
+                    Text("Range")
+                } minimumValueLabel: {
+                    Text("0")
+                } maximumValueLabel: {
+                    Text("100km")
+                }.padding(24)
             }
-            Slider(value: $sightingRange, in: 0...100_000, step: 100) {
-                Text("Range")
-            } minimumValueLabel: {
-                Text("0")
-            } maximumValueLabel: {
-                Text("100km")
-            }.padding(24)
         }
     }
 }
