@@ -1,5 +1,5 @@
 //
-//  PeakCatalog.swift
+//  Sighting.swift
 //  Peaky Finders
 //
 //  Created by Albert Morris on 6/6/26.
@@ -9,7 +9,7 @@ import CoreLocation
 import MapKit
 
 
-struct Sighting: Identifiable {
+struct Sighting: Identifiable, Hashable {
     let peak: Peak
     let bearing: CLLocationDirection   // degrees clockwise from true north, frozen at construction
     let distance: CLLocationDistance   // meters, frozen at construction

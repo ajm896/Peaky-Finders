@@ -10,7 +10,7 @@ import CoreLocation
 import MapKit
 
 /// A named geographic summit the app can point the user toward.
-struct Peak: Codable, Identifiable {
+struct Peak: Codable, Identifiable, Hashable {
     var id: String { name }
     var name: String
     var latitude: Double
