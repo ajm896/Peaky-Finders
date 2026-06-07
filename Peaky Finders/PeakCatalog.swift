@@ -33,12 +33,14 @@ struct SightingView: View {
     var sighting: Sighting
     var heading: CLLocationDirection
     var body: some View {
-        Text("\(sighting.peak.name)")
-        BearingDisplay(bearingToTarget: sighting.bearing, currentHeading: heading)
-        DistanceDisplay(distance: sighting.distance)
-        Map {
-            Marker(sighting.peak.name, coordinate: sighting.peak.coordinate)
-            UserAnnotation()
+        VStack{
+            Text("\(sighting.peak.name)")
+            BearingDisplay(bearingToTarget: sighting.bearing, currentHeading: heading)
+            DistanceDisplay(distance: sighting.distance)
+            Map {
+                Marker(sighting.peak.name, coordinate: sighting.peak.coordinate)
+                UserAnnotation()
+            }
         }
     }
 }
