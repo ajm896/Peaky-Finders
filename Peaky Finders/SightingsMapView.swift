@@ -8,11 +8,15 @@ import SwiftUI
 import MapKit
 import CoreLocation
 
+/// Main screen. Shows all in-range peaks as map markers. Tapping a marker
+/// presents a `SightingView` sheet with a live bearing arrow and detail map.
+/// A slider at the bottom controls the search radius (0–100 km).
 struct SightingsMapView: View {
     var sightings: [Sighting]
     var heading: CLLocationDirection
     var userLocation: CLLocation
     @State private var selectedSighting: Sighting?
+    /// Search radius bound to the parent's state; units are meters.
     @Binding var sightingRange: CLLocationDistance
     var body: some View {
         VStack {
@@ -26,6 +30,7 @@ struct SightingsMapView: View {
             .sheet(item: $selectedSighting) { sighting in
                 SightingView(sighting: sighting, heading: heading, userLocation: userLocation)
             }
+            // Range slider: 0–100 km in 100 m steps.
             Slider(value: $sightingRange, in: 0...100_000, step: 100) {
                 Text("Range")
             } minimumValueLabel: {
