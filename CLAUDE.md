@@ -50,3 +50,52 @@ Data flows in one direction: CoreLocation → `LocationProvider` → views.
 
 - Document the non-obvious — every type and the tricky computed properties (relative bearing, the heading `nil` sentinel, the bearing formula) carry explanatory comments. Match that density.
 - Keep peak coordinates in one place (`peaks.json` for runtime, `Peak` static constants for previews); don't reintroduce inline literals.
+
+## Commit messages — Conventional Commits
+
+All commits MUST follow the Conventional Commits 1.0.0 spec. Format:
+
+    <type>(<optional scope>): <description>
+
+    [optional body]
+
+    [optional footer(s)]
+
+### Rules
+- **Type** is required and lowercase. Allowed types ONLY:
+  - `feat` — a new user-facing capability (maps to semver MINOR)
+  - `fix` — a bug fix in existing behavior (maps to semver PATCH)
+  - `refactor` — code change that neither fixes a bug nor adds a feature
+  - `perf` — a change that improves performance
+  - `docs` — documentation only
+  - `test` — adding or correcting tests
+  - `build` — build system, dependencies, project/target config
+  - `chore` — tooling, gitignore, housekeeping with no src/ impact
+  - `style` — formatting/whitespace only, no logic change
+- **Scope** is optional but preferred; use the area of the codebase
+  (e.g. `location`, `ar`, `sighting`, `catalog`, `map`).
+- **Description**: imperative mood ("add", not "added"/"adds"),
+  no trailing period, ≤ 72 chars on the subject line.
+- **Breaking changes**: append `!` after type/scope AND add a
+  `BREAKING CHANGE:` footer explaining the break (maps to semver MAJOR).
+
+### Honesty rules (these override convenience)
+- The type MUST reflect what the diff actually does. If a change adds a
+  feature but also refactors, that's two commits, not one `feat`.
+- Do NOT combine unrelated changes under one type. Prefer multiple small
+  commits over one mixed-bag commit.
+- `feat`/`fix` are for changes to shipping behavior only. Renames,
+  extractions, and reorganizations are `refactor`, not `feat`.
+- If unsure whether something is `feat` or `fix`, look at whether it adds
+  new behavior (`feat`) or corrects existing behavior (`fix`).
+- The body explains *why*, not *what* — the diff already shows the what.
+- Never invent a scope or claim a change the diff doesn't contain.
+
+### Examples
+    feat(ar): project peak labels onto the camera feed
+    fix(location): use true heading instead of magnetic for bearings
+    refactor(sighting): freeze bearing and distance at construction
+    docs(readme): document the rung-based project structure
+    feat(catalog)!: load peaks from remote API
+
+    BREAKING CHANGE: peaks.json is no longer bundled; network required.
