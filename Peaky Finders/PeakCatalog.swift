@@ -10,7 +10,12 @@ import Foundation
 extension Peak {
     /// Loads the bundled peak dataset. Traps on failure, by design — see note.
     static func loadBundled(named filename: String = "peaks") -> [Peak] {
-        guard let url = Bundle.main.url(forResource: filename, withExtension: "json") else {
+        guard
+            let url = Bundle.main.url(
+                forResource: filename,
+                withExtension: "json"
+            )
+        else {
             fatalError("Missing bundled resource: \(filename).json")
         }
         do {
@@ -25,4 +30,3 @@ extension Peak {
 enum PeakCatalog {
     static let all: [Peak] = Peak.loadBundled()
 }
-

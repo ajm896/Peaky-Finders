@@ -1,3 +1,5 @@
+import CoreLocation
+import MapKit
 //
 //  SightingsMapView.swift
 //  Peaky Finders
@@ -5,8 +7,6 @@
 //  Created by Albert Morris on 6/6/26.
 //
 import SwiftUI
-import MapKit
-import CoreLocation
 
 struct SightingsMapView: View {
     var sightings: [Sighting]
@@ -16,19 +16,25 @@ struct SightingsMapView: View {
     @Binding var sightingRange: CLLocationDistance
     var body: some View {
         VStack {
-            Map(initialPosition: initialCamera,
-                selection: $selectedSighting) {
+            Map(
+                initialPosition: initialCamera,
+                selection: $selectedSighting
+            ) {
                 UserAnnotation()
                 ForEach(sightings) { sighting in
-                    Marker(sighting.peak.name,
-                           coordinate: sighting.peak.coordinate)
-                        .tag(sighting)
+                    Marker(
+                        sighting.peak.name,
+                        coordinate: sighting.peak.coordinate
+                    )
+                    .tag(sighting)
                 }
             }
             .sheet(item: $selectedSighting) { sighting in
-                SightingView(sighting: sighting,
-                             heading: heading,
-                             userLocation: userLocation)
+                SightingView(
+                    sighting: sighting,
+                    heading: heading,
+                    userLocation: userLocation
+                )
             }
             Slider(value: $sightingRange, in: 0...100_000, step: 100) {
                 Text("Range")
@@ -49,7 +55,8 @@ struct SightingsMapView: View {
         let lats = coords.map(\.latitude)
         let lons = coords.map(\.longitude)
         guard let minLat = lats.min(), let maxLat = lats.max(),
-              let minLon = lons.min(), let maxLon = lons.max() else {
+            let minLon = lons.min(), let maxLon = lons.max()
+        else {
             return .userLocation(fallback: .automatic)
         }
 
@@ -66,8 +73,13 @@ struct SightingsMapView: View {
 }
 
 #Preview {
-SightingsMapView(sightings: PeakCatalog.all.sightings(from: homeOfficeDebug, within: 50_000),
-                 heading: 0,
-                 userLocation: homeOfficeDebug,
-                 sightingRange: .constant(50_000))
+    SightingsMapView(
+        sightings: PeakCatalog.all.sightings(
+            from: homeOfficeDebug,
+            within: 50_000
+        ),
+        heading: 0,
+        userLocation: homeOfficeDebug,
+        sightingRange: .constant(50_000)
+    )
 }

@@ -5,9 +5,9 @@
 //  Created by Albert Morris on 6/5/26.
 //
 
-import SwiftUI
 import CoreLocation
 import MapKit
+import SwiftUI
 
 /// A named geographic summit the app can point the user toward.
 struct Peak: Codable, Identifiable, Hashable {
@@ -16,18 +16,22 @@ struct Peak: Codable, Identifiable, Hashable {
     var latitude: Double
     var longitude: Double
     var coordinate: CLLocationCoordinate2D {
-        CLLocationCoordinate2D(latitude: latitude,
-                               longitude: longitude)
+        CLLocationCoordinate2D(
+            latitude: latitude,
+            longitude: longitude
+        )
     }
     var location: CLLocation {
-        CLLocation(latitude: coordinate.latitude,
-                   longitude: coordinate.longitude)
+        CLLocation(
+            latitude: coordinate.latitude,
+            longitude: coordinate.longitude
+        )
     }
-    
+
     func bearing(from userLoc: CLLocationCoordinate2D) -> Double {
         userLoc.bearing(to: self.coordinate)
     }
-    
+
     func distance(from userLoc: CLLocation) -> CLLocationDistance {
         userLoc.distance(from: self.location)
     }
@@ -75,7 +79,8 @@ extension CLLocationCoordinate2D {
         let phi2 = other.latitude.radians
 
         let term1 = sin(deltaLon) * cos(phi2)
-        let term2 = cos(phi1) * sin(phi2) - (sin(phi1) * cos(phi2) * cos(deltaLon))
+        let term2 =
+            cos(phi1) * sin(phi2) - (sin(phi1) * cos(phi2) * cos(deltaLon))
 
         let theta = atan2(term1, term2)
 
@@ -106,14 +111,19 @@ struct PeakView: View {
 }
 
 extension Collection where Element == Peak {
-    func sightings(from location: CLLocation, within range: CLLocationDistance = .greatestFiniteMagnitude) -> [Sighting] {
+    func sightings(
+        from location: CLLocation,
+        within range: CLLocationDistance = .greatestFiniteMagnitude
+    ) -> [Sighting] {
         compactMap { peak in
-                let distance = peak.distance(from: location)
-                guard distance <= range else { return nil }
-                return Sighting(peak: peak,
-                                bearing: peak.bearing(from: location.coordinate),
-                                distance: distance)
-            }
-            .sorted { $0.bearing < $1.bearing }
+            let distance = peak.distance(from: location)
+            guard distance <= range else { return nil }
+            return Sighting(
+                peak: peak,
+                bearing: peak.bearing(from: location.coordinate),
+                distance: distance
+            )
+        }
+        .sorted { $0.bearing < $1.bearing }
     }
 }
