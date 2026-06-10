@@ -23,7 +23,7 @@ struct SightingView: View {
 
     var body: some View {
         VStack{
-            Text("\(sighting.peak.name)")
+            Text("\(sighting.peak.name)").padding(12)
             BearingDisplay(bearingToTarget: sighting.bearing, currentHeading: heading)
             DistanceDisplay(distance: sighting.distance)
             Map(initialPosition: initialCamera) {
@@ -50,5 +50,5 @@ struct SightingView: View {
 }
 
 #Preview {
-    SightingView(sighting: PeakCatalog.all.sightings(from: homeOfficeDebug)[0], heading: 0, userLocation: homeOfficeDebug)
+    SightingView(sighting: PeakCatalog.all.sightings(from: homeOfficeDebug)[0], heading: 0, userLocation: officeLocationDebug)
 }

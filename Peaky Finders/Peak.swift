@@ -16,9 +16,13 @@ struct Peak: Codable, Identifiable, Hashable {
     var latitude: Double
     var longitude: Double
     var coordinate: CLLocationCoordinate2D {
-        CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        CLLocationCoordinate2D(latitude: latitude,
+                               longitude: longitude)
     }
-    var location: CLLocation { CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude) }
+    var location: CLLocation {
+        CLLocation(latitude: coordinate.latitude,
+                   longitude: coordinate.longitude)
+    }
     
     func bearing(from userLoc: CLLocationCoordinate2D) -> Double {
         userLoc.bearing(to: self.coordinate)
@@ -106,7 +110,9 @@ extension Collection where Element == Peak {
         compactMap { peak in
                 let distance = peak.distance(from: location)
                 guard distance <= range else { return nil }
-                return Sighting(peak: peak, bearing: peak.bearing(from: location.coordinate), distance: distance)
+                return Sighting(peak: peak,
+                                bearing: peak.bearing(from: location.coordinate),
+                                distance: distance)
             }
             .sorted { $0.bearing < $1.bearing }
     }

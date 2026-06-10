@@ -14,8 +14,7 @@ import MapKit
 struct ContentView: View {
     @State private var locationProvider = LocationProvider()
     @State private var sightingRange: CLLocationDistance = 100_000
-    
-    
+
     var body: some View {
         VStack{
             switch locationProvider.authorizationStatus {

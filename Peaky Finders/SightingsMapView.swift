@@ -16,15 +16,19 @@ struct SightingsMapView: View {
     @Binding var sightingRange: CLLocationDistance
     var body: some View {
         VStack {
-            Map(initialPosition: initialCamera, selection: $selectedSighting) {
+            Map(initialPosition: initialCamera,
+                selection: $selectedSighting) {
                 UserAnnotation()
                 ForEach(sightings) { sighting in
-                    Marker(sighting.peak.name, coordinate: sighting.peak.coordinate)
+                    Marker(sighting.peak.name,
+                           coordinate: sighting.peak.coordinate)
                         .tag(sighting)
                 }
             }
             .sheet(item: $selectedSighting) { sighting in
-                SightingView(sighting: sighting, heading: heading, userLocation: userLocation)
+                SightingView(sighting: sighting,
+                             heading: heading,
+                             userLocation: userLocation)
             }
             Slider(value: $sightingRange, in: 0...100_000, step: 100) {
                 Text("Range")
@@ -36,7 +40,8 @@ struct SightingsMapView: View {
         }
     }
 
-    /// Region that fits the user's location and all sighting peaks with a bit of padding.
+    /// Region that fits the user's location and
+    /// all sighting peaks with a bit of padding.
     private var initialCamera: MapCameraPosition {
         var coords = sightings.map(\.peak.coordinate)
         coords.append(userLocation.coordinate)
@@ -61,5 +66,8 @@ struct SightingsMapView: View {
 }
 
 #Preview {
-SightingsMapView(sightings: PeakCatalog.all.sightings(from: homeOfficeDebug, within: 50_000), heading: 0, userLocation: homeOfficeDebug, sightingRange: .constant(50_000))
+SightingsMapView(sightings: PeakCatalog.all.sightings(from: homeOfficeDebug, within: 50_000),
+                 heading: 0,
+                 userLocation: homeOfficeDebug,
+                 sightingRange: .constant(50_000))
 }
