@@ -8,5 +8,7 @@
   { "name": "Richland Balsam",    "latitude": 35.3671315, "longitude": -82.9900864 },
   { "name": "Black Balsam Knob",  "latitude": 35.3278842, "longitude": -82.8742978 },
   { "name": "Devil's Courthouse", "latitude": 35.30250,   "longitude": -82.89556 },
-  { "name": "Tanasee Bald",       "latitude": 35.29177,   "longitude": -82.91763 }
+  { "name": "Tanasee Bald",       "latitude": 35.29177,   "longitude": -82.91763 },
+  { "name": "Ducker Mountain",    "latitude": 35.4945577, "longitude": -82.5537337},
+  { "name": "Britton Mountian" ,  "latitude":   35.4665023, "longitude": -82.5667895}
 ]
