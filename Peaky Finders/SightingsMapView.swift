@@ -85,7 +85,7 @@ struct MapView: View {
                         let sightings: [Sighting] = PeakCatalog.all.sightings(
                             from: currentLocation,
                             within: sightingRange
-                        )
+                        ).sorted(by: {$0.distance < $1.distance})
                         SightingsMapView(
                             sightings: sightings,
                             heading: heading,

@@ -56,7 +56,7 @@ struct SightingView: View {
 
 #Preview {
     SightingView(
-        sighting: PeakCatalog.all.sightings(from: homeOfficeDebug)[0],
+        sighting: PeakCatalog.all.sightings(from: officeLocationDebug).sorted(by: {$0.distance < $1.distance})[0],
         heading: 0,
         userLocation: officeLocationDebug
     )

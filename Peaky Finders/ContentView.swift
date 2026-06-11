@@ -14,6 +14,7 @@ import SwiftUI
 struct ContentView: View {
     @State private var locationProvider = LocationProvider()
     @State private var sightingRange: CLLocationDistance = 100_000
+    @State private var selectedSighting = PeakCatalog.all.sightings(from: officeLocationDebug).sorted(by: {$0.distance < $1.distance})[0]
     
     var body: some View {
         TabView {
@@ -22,7 +23,7 @@ struct ContentView: View {
             }
             
             Tab("View Finder", systemImage: "binoculars") {
-                ARScreen()
+                ARScreen(sighting: selectedSighting)
             }
         }
     }
