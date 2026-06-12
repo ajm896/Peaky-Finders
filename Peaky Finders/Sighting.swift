@@ -7,12 +7,16 @@ import MapKit
 //  Created by Albert Morris on 6/6/26.
 //
 import SwiftUI
+import simd
 
 struct Sighting: Identifiable, Hashable {
     let peak: Peak
     let bearing: CLLocationDirection  // degrees clockwise from true north, frozen at construction
     let distance: CLLocationDistance  // meters, frozen at construction
     var id: Peak.ID { peak.id }
+    var direction: SIMD4<Float> {
+        [Float(sin(self.bearing.radians)), 0, -Float(cos(self.bearing.radians)), 0]
+    }
 }
 
 struct SightingView: View {

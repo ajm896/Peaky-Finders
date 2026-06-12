@@ -14,17 +14,25 @@ import SwiftUI
 struct ContentView: View {
     @State private var locationProvider = LocationProvider()
     @State private var sightingRange: CLLocationDistance = 100_000
-    @State private var selectedSighting = PeakCatalog.all.sightings(from: officeLocationDebug).sorted(by: {$0.distance < $1.distance})[0]
-    
+    @State private var selectedSighting = PeakCatalog.all.sightings(
+        from: homeOfficeDebug
+    ).sorted(by: { $0.distance < $1.distance })[0]
+
     var body: some View {
         TabView {
-            Tab("Map", systemImage: "map"){
-                MapView(locationProvider: locationProvider, sightingRange: $sightingRange)
-            }
-            
             Tab("View Finder", systemImage: "binoculars") {
-                ARScreen(sighting: selectedSighting)
+                SightingScreen(locationProvider: locationProvider)
             }
+
+            Tab("Map", systemImage: "map") {
+                MapView(
+                    locationProvider: locationProvider,
+                    sightingRange: $sightingRange
+                )
+            }
+        }.onAppear() {
+            locationProvider.start()
+            
         }
     }
 }

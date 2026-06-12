@@ -105,8 +105,6 @@ struct MapView: View {
             @unknown default:
                 Text("Unknown Error")
             }
-        }.onAppear {
-            locationProvider.start()
         }
     }
 }
