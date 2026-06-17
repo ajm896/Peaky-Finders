@@ -5,19 +5,19 @@
 //  Created by Albert Morris on 6/12/26.
 //
 
-
 import ARKit
 import Combine
 import RealityKit
-import simd
 import SwiftUI
+import simd
 
 // MARK: - Model
 
 @MainActor @Observable
 final class SightingModel {
     var sightings: [Sighting] = []  // set once we have a location fix
-    var aimed: Sighting?            // peak currently down the barrel
+    var aimed: Sighting?  // peak currently down the barrel
+    var resetToken = 0
 }
 
 // MARK: - ARView bridge
@@ -35,6 +35,7 @@ struct SightingARView: UIViewRepresentable {
     // if it deinits, the subscription fires no more frames.
     final class Coordinator {
         var frameSub: (any Cancellable)?
+        var lastToken: Int = 0
     }
 
     func makeUIView(context: Context) -> ARView {
@@ -66,7 +67,12 @@ struct SightingARView: UIViewRepresentable {
         return arView
     }
 
-    func updateUIView(_ uiView: ARView, context: Context) { }
+    func updateUIView(_ uiView: ARView, context: Context) {
+        guard context.coordinator.lastToken != model.resetToken else { return }
+        context.coordinator.lastToken = model.resetToken
+        guard let config = uiView.session.configuration else { return }
+        uiView.session.run(config, options: [.resetTracking])
+    }
 }
 
 // MARK: - Screen
@@ -74,7 +80,8 @@ struct SightingARView: UIViewRepresentable {
 struct SightingScreen: View {
     let locationProvider: LocationProvider
     @State private var model = SightingModel()
-
+    let sightingRange: CLLocationDistance
+    
     var body: some View {
         ZStack {
             SightingARView(model: model).ignoresSafeArea()
@@ -84,26 +91,50 @@ struct SightingScreen: View {
                 .stroke(.white.opacity(0.7), lineWidth: 2)
                 .frame(width: 64, height: 64)
 
+            // Aimed-peak readout, pinned just below the reticle.
             if let s = model.aimed {
                 VStack(spacing: 4) {
                     Text(s.peak.name).font(.headline)
                     Text("\(Int(s.distance / 1000)) km").font(.subheadline)
+                    // No arrow without a true-north heading; bearing would be meaningless.
+                    if let heading = locationProvider.heading {
+                        BearingDisplay(
+                            bearingToTarget: s.bearing,
+                            currentHeading: heading
+                        )
+                    }
                 }
                 .padding(10)
                 .background(.black.opacity(0.6), in: .rect(cornerRadius: 10))
                 .foregroundStyle(.white)
                 .offset(y: 56)  // just below the reticle
             }
+
+            // Recenter control, anchored above the tab bar like a search button.
+            VStack {
+                Spacer()
+                Button("Recenter") {
+                    model.resetToken += 1
+                }
+                .buttonStyle(.borderedProminent)
+                .padding(.bottom)
+            }
         }
         .onAppear {
             // Seed immediately if the Map tab already produced a fix.
             if let loc = locationProvider.currentLocation {
-                model.sightings = PeakCatalog.all.sightings(from: loc)
+                model.sightings = PeakCatalog.all.sightings(
+                    from: loc,
+                    within: sightingRange
+                )
             }
         }
         .onChange(of: locationProvider.currentLocation) { _, newLocation in
             if let loc = newLocation {
-                model.sightings = PeakCatalog.all.sightings(from: loc, within: 15_000)
+                model.sightings = PeakCatalog.all.sightings(
+                    from: loc,
+                    within: sightingRange
+                )
             }
         }
     }

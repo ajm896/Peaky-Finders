@@ -13,15 +13,13 @@ import SwiftUI
 /// shows the bearing and distance to the target peak.
 struct ContentView: View {
     @State private var locationProvider = LocationProvider()
-    @State private var sightingRange: CLLocationDistance = 100_000
-    @State private var selectedSighting = PeakCatalog.all.sightings(
-        from: homeOfficeDebug
-    ).sorted(by: { $0.distance < $1.distance })[0]
+    @State private var sightingRange: CLLocationDistance = 15_000
 
     var body: some View {
         TabView {
             Tab("View Finder", systemImage: "binoculars") {
-                SightingScreen(locationProvider: locationProvider)
+                SightingScreen(locationProvider: locationProvider,
+                               sightingRange: sightingRange)
             }
 
             Tab("Map", systemImage: "map") {
