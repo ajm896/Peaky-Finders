@@ -119,17 +119,15 @@ struct SightingScreen: View {
 ///             (worldAlignment: .gravityAndHeading — +x East, +y Up, −z North).
 ///   - sightings: Candidate sightings with bearings in degrees clockwise from true north.
 func aimedPeak(camera: simd_float4x4, among sightings: [Sighting]) -> Sighting? {
-    var cameraDir = camera.columns.2
-    cameraDir.z = -cameraDir.z
+    let cameraDir = -camera.columns.2
     // `.max(by:)` wants "is s1 ordered before s2?" — i.e. less-aligned first —
     // so the element it returns is the one with the greatest alignment.
     let closestSighting = sightings.max { s1, s2 in
         dot(s1.direction, cameraDir) < dot(s2.direction, cameraDir)
     }
-    
-    if let closestSighting {
-        return dot(closestSighting.direction, cameraDir) > 0.8 ? closestSighting : nil
-    } else {
-        return nil
-    }
+
+    guard let best = closestSighting,
+        dot(best.direction, cameraDir) > 0.8
+    else { return nil }
+    return best
 }
