@@ -1,5 +1,6 @@
 import CoreLocation
 import MapKit
+import Foundation
 //
 //  SightingsMapView.swift
 //  Peaky Finders
@@ -12,8 +13,13 @@ struct SightingsMapView: View {
     var sightings: [Sighting]
     var heading: CLLocationDirection
     var userLocation: CLLocation
+    var displayUnit: UnitLength = .meters 
     @State private var selectedSighting: Sighting?
     @Binding var sightingRange: CLLocationDistance
+    var maxDistance: Measurement<UnitLength> {
+        Measurement(value: 10_000, unit: .meters)
+            .converted(to: displayUnit)
+    }
     var body: some View {
         VStack {
             Map(
@@ -28,6 +34,8 @@ struct SightingsMapView: View {
                     )
                     .tag(sighting)
                 }
+            }.mapControls{
+                MapCompass()
             }
             .sheet(item: $selectedSighting) { sighting in
                 SightingView(
@@ -36,12 +44,12 @@ struct SightingsMapView: View {
                     userLocation: userLocation
                 )
             }
-            Slider(value: $sightingRange, in: 0...100_000, step: 100) {
+            Slider(value: $sightingRange, in: 0...10_000, step: 1000) {
                 Text("Range")
             } minimumValueLabel: {
                 Text("0")
             } maximumValueLabel: {
-                Text("100km")
+                Text("\(maxDistance,format: .measurement(width: .abbreviated))")
             }.padding(24)
         }
     }
@@ -112,11 +120,11 @@ struct MapView: View {
 #Preview {
     SightingsMapView(
         sightings: PeakCatalog.all.sightings(
-            from: homeOfficeDebug,
+            from: officeLocationDebug,
             within: 50_000
         ),
         heading: 0,
         userLocation: homeOfficeDebug,
-        sightingRange: .constant(50_000)
+        sightingRange: .constant(15_000)
     )
 }

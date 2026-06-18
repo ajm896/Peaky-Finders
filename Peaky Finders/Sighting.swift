@@ -35,7 +35,11 @@ struct SightingView: View {
             Map(initialPosition: initialCamera) {
                 Marker(sighting.peak.name, coordinate: sighting.peak.coordinate)
                 UserAnnotation()
+                    
             }.mapStyle(.imagery)
+            .mapControls {
+                MapCompass()
+            }
         }
     }
 
