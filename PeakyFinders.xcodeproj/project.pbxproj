@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		B47D45D12FD08DE900A9697B /* Peaky Finders.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Peaky Finders.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B47D45D12FD08DE900A9697B /* PeakyFinders.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PeakyFinders.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		B47D45D32FD08DE900A9697B /* Peaky Finders */ = {
+		B47D45D32FD08DE900A9697B /* PeakyFinders */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "Peaky Finders";
+			path = PeakyFinders;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -32,7 +32,7 @@
 		B47D45C82FD08DE900A9697B = {
 			isa = PBXGroup;
 			children = (
-				B47D45D32FD08DE900A9697B /* Peaky Finders */,
+				B47D45D32FD08DE900A9697B /* PeakyFinders */,
 				B47D45D22FD08DE900A9697B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -40,7 +40,7 @@
 		B47D45D22FD08DE900A9697B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B47D45D12FD08DE900A9697B /* Peaky Finders.app */,
+				B47D45D12FD08DE900A9697B /* PeakyFinders.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,9 +48,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		B47D45D02FD08DE900A9697B /* Peaky Finders */ = {
+		B47D45D02FD08DE900A9697B /* PeakyFinders */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B47D45DC2FD08DEA00A9697B /* Build configuration list for PBXNativeTarget "Peaky Finders" */;
+			buildConfigurationList = B47D45DC2FD08DEA00A9697B /* Build configuration list for PBXNativeTarget "PeakyFinders" */;
 			buildPhases = (
 				B47D45CD2FD08DE900A9697B /* Sources */,
 				B47D45CE2FD08DE900A9697B /* Frameworks */,
@@ -61,13 +61,13 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				B47D45D32FD08DE900A9697B /* Peaky Finders */,
+				B47D45D32FD08DE900A9697B /* PeakyFinders */,
 			);
-			name = "Peaky Finders";
+			name = PeakyFinders;
 			packageProductDependencies = (
 			);
 			productName = "Peaky Finders";
-			productReference = B47D45D12FD08DE900A9697B /* Peaky Finders.app */;
+			productReference = B47D45D12FD08DE900A9697B /* PeakyFinders.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -85,7 +85,7 @@
 					};
 				};
 			};
-			buildConfigurationList = B47D45CC2FD08DE900A9697B /* Build configuration list for PBXProject "Peaky Finders" */;
+			buildConfigurationList = B47D45CC2FD08DE900A9697B /* Build configuration list for PBXProject "PeakyFinders" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -99,7 +99,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				B47D45D02FD08DE900A9697B /* Peaky Finders */,
+				B47D45D02FD08DE900A9697B /* PeakyFinders */,
 			);
 		};
 /* End PBXProject section */
@@ -276,7 +276,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = "cc.amorris.Peaky-Finders";
+				PRODUCT_BUNDLE_IDENTIFIER = cc.amorris.PeakyFinders;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -320,7 +320,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = "cc.amorris.Peaky-Finders";
+				PRODUCT_BUNDLE_IDENTIFIER = cc.amorris.PeakyFinders;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -339,7 +339,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		B47D45CC2FD08DE900A9697B /* Build configuration list for PBXProject "Peaky Finders" */ = {
+		B47D45CC2FD08DE900A9697B /* Build configuration list for PBXProject "PeakyFinders" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B47D45DA2FD08DEA00A9697B /* Debug */,
@@ -348,7 +348,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B47D45DC2FD08DEA00A9697B /* Build configuration list for PBXNativeTarget "Peaky Finders" */ = {
+		B47D45DC2FD08DEA00A9697B /* Build configuration list for PBXNativeTarget "PeakyFinders" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B47D45DD2FD08DEA00A9697B /* Debug */,

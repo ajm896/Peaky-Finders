@@ -9,7 +9,7 @@ import SwiftUI
 
 /// App entry point. Hosts the single window showing `ContentView`.
 @main
-struct Peaky_FindersApp: App {
+struct PeakyFindersApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
